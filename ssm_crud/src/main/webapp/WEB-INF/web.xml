@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_9" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+    <display-name>Archetype Created Web Application</display-name>
+
+    <!--
+    spring整合springMVC因为spring只扫描service和dao springMvc只扫描controller
+    当服务器启动时前端控制器对象创建 同时去加载springMVC.xml 把带有@controller的类加入IOC容器
+    但是applicationContext.xml 没有被加载 所有service和dao的类即没有被加到IOC容器中
+    进而在controller层也无法实现注入service的对象 就不能去调用其方法
+    所以我们使用监听器去监听servletContext对象 因为它的生命周期和服务器生命周期一致
+    当服务器开启，servletContext对象创建  服务器关闭 servletContext对象销毁
+    我们使用监听器监听servletContext 它创建时就去加载applicationContext.xml
+    所以spring为我们您提供了这个可以做这件事的监听器
+    配置此监听器
+    -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!--配置加载spring配置文件的路径  因为此监听器只加载WEB-INF下的名为applicationContext.xml的文件
+    我们的配置文件放在resources下为了方便管理我们不将他移动  而是手动配置路径
+    -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+
+
+    <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:springMVC.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <!--字符编码过滤器  一定要放到其他过滤器之前-->
+    <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+       <init-param>
+           <param-name>forceRequestEncoding</param-name>
+           <param-value>true</param-value>
+       </init-param>
+        <init-param>
+            <param-name>forceResponseEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+<!--使用restful风格过滤器-->
+    <filter>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+<filter-mapping>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+</web-app>

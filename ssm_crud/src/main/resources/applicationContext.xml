@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+    <!-- 告知 spring 创建容器时要扫描的包 use-default-filters="false" 不使用默认扫描规则 -->
+    <context:component-scan base-package="com.ssm">
+      <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!--=============配置数据源=============-->
+    <!--引入配置文件-->
+    <context:property-placeholder location="classpath:jdbcconfig.properties" />
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="user" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--===========整合mybatis===============-->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--指定mybatis的主配置文件  **注意是类路径下 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+
+        <property name="dataSource" ref="dataSource"/>
+
+        <!--指定mybatis映射配置文件  **注意是类路径下-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+
+    </bean>
+    <!--配置扫描dao-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.ssm.dao"/>
+    </bean>
+    <!--配置一个可以执行多次的sqlSession-->
+<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
+    <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"/>
+    <!--设置此属性为BATCH 表示支持批量执行-->
+    <constructor-arg name="executorType" value="BATCH"/>
+</bean>
+
+    <!--===============配置事务==================-->
+    <!--1.配置事务管理器-->
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+       <!--控制住数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:advice id="txAdvice"  transaction-manager="transactionManager" >
+        <tx:attributes>
+            <tx:method name="select*" read-only="true" propagation="SUPPORTS" />
+            <tx:method name="*" read-only="false" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <!---->
+        <aop:pointcut id="pt" expression="execution(* com.ssm.service.impl.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pt"/>
+    </aop:config>
+<!--spring配置的几个要素：1.数据源 2.整合mybatis 3.事务-->
+
+
+</beans> 
