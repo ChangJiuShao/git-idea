@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:v-text="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="utf-8" />
+		<title>v-text与v-html</title>
+		<script src="js/vuejs-2.5.16.js"></script>
+	</head>
+	<body>
+		<div id="app">
+            <!--不会解析html-->
+			<div v-text="message"></div>
+            <!--会解析html-->
+			<div v-html="message"></div>
+		</div>
+	</body>
+	<script>
+		//view model
+new Vue({
+    el:"#app",
+    data:{
+        message:"<h1>hello Vue</h1>"
+
+    }
+
+
+
+})
+	</script>
+</html>

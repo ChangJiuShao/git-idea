@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="utf-8" />
+		<title>v-on:click</title>
+		<script src="js/vuejs-2.5.16.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			{{message}}
+            <button v-on:click="fun1('msg')" >点击</button>
+		</div>
+	</body>
+	<script>
+		//view model
+        new Vue({
+            el:"#app",
+            data:{
+                message:"hello Vue"
+
+            },
+
+            methods:{//是methods  不是method
+                fun1:function (msg) {
+                    alert("hello vue");
+                    this.message=msg;
+                }
+
+            }
+
+
+        })
+
+	</script>
+</html> 

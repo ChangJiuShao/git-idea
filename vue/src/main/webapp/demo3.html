@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>v-on:keydown</title>
+		<script src="js/vuejs-2.5.16.js"></script>
+	</head>
+
+	<body>
+		<div id="app">
+            <input type="text" v-on:keydown="keydown($event)">
+		</div>
+	</body>
+	<script>
+		//view model
+new Vue({
+    el:"#app",
+    methods:{
+//绑定键盘按下事件  keydown
+        keydown:function (event) {
+            //event 是$event 传进来的 表示vue对象
+            //获取按下的键盘值得unicode码
+
+            var keyCode = event.keyCode;
+
+            //48-57 表示0-9的数字
+            if (keyCode<48||keyCode>57){
+                //preventDefault() 表示除了0-9的数字按下其他的按键不起作用
+                event.preventDefault()
+
+            }
+        }
+
+    }
+
+
+
+});
+		
+		
+		
+		
+		
+		
+
+	</script>
+	
+	
+
+</html>

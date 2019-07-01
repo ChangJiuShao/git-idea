@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>v-on:事件修饰符</title>
+
+		<script src="js/vuejs-2.5.16.js"></script>
+	</head>
+
+	<body>
+		<div id="app">
+			<!-- <form action="http://www.itcast.cn" onsubmit="return checkform()">
+				<input type="submit" value="Go"> 
+			</form> -->
+
+            <!--加上.prevent 表示事件-->
+			<form @submit.prevent action="http://www.itcast.cn" >
+				<input type="submit" value="Go"> 
+			</form>
+			
+			<div @click="fun">
+				<a @click.stop href="http://www.itcast.cn">itcast</a>
+			</div>
+		</div>
+	</body>
+	<script>
+		//view model
+		new Vue({
+			el:"#app",
+			methods:{
+				fun:function(){
+					alert("haha");
+
+				}
+			}
+		});
+		
+		/* function checkform(){
+			return false;
+		} */
+		
+		
+		
+	</script>
+
+</html>

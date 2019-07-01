@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>快速入门</title>
+		<script src="js/vuejs-2.5.16.js"></script>
+	</head>
+	<body>
+		<div id="app">
+
+            {{message}}<!--vue的插值表达式用来接收data里面的值-->
+            <!--vue支持数学运算 和三元表达式-->
+            {{num+100}}
+
+            {{true? 'ok': 'on'}}
+
+
+
+		</div>
+	</body>
+	<script>
+        //在script标签内 创建vue对象  new Vue()  括号里面的内容是json格式的
+   new Vue({
+       el:"#app",//表示id=app的区域由Vue接管了
+       data:{
+           message:"hello vue",//注意此处不要加分号
+           num:100
+       }
+   })
+
+
+    </script>
+</html>
