@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--引入thymeleaf名称空间-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>Signin Template for Bootstrap</title>
+
+        <!--引入thymeleaf名称空间后使用@{}来引入bootstrap文件
+        th:标签的属性 就可以设置标签的对应属性
+        通过引入bootstrap的坐标后引入对应的css文件
+        /webjars/bootstrap/4.3.1/css/bootstrap.css 前面的/代表项目名
+
+        这样配置的好处就是如果访问项目名改变了这个路径也会随之改变
+        -->
+		<link  th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" rel="stylesheet">
+		<!-- Custom styles for this template -->
+		<link href="asserts/css/signin.css" rel="stylesheet">
+	</head>
+
+	<body class="text-center">
+		<form class="form-signin"  th:action="login" method="post">
+			<img class="mb-4" src="asserts/img/bootstrap-solid.svg" alt="" width="72" height="72">
+			<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <!--提示错误信息
+            如果判断信息失败那么整个p标签就和其中的属性都不会生效
+            th:if="${not #strings.isEmpty(msg)}" 判断提示信息是否为空
+             -->
+            <p th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+			<label class="sr-only">Username</label>
+			<input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+			<label class="sr-only">Password</label>
+			<input type="password" name="password" class="form-control" placeholder="Password" required="">
+			<div class="checkbox mb-3">
+				<label>
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+			</div>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+			<p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+			<a class="btn btn-sm">中文</a>
+			<a class="btn btn-sm">English</a>
+		</form>
+
+	</body>
+
+</html>

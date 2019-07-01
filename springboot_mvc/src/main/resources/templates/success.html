@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--导入thymeleaf的名称空间-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--  取出map中的元素-->
+<div th:text="${hello}"></div>
+<hr>
+    <!--th:text  会转译特殊字符-->
+<div th:text="${nihao}"></div>
+<!--th:text 不会转译特殊字符-->
+<div th:utext="${nihao}"></div>
+<hr>
+
+<!--each: 遍历users 遍历出的元素使用user接收 中间加：
+然后再用th：text="${user}"取出
+
+**使用th:each 每遍历一次就会把 标签显示一次
+-->
+<div th:each="user:${users}" th:text="${user}"></div>
+
+<!--也可以使用[[${user}]] 或者[(user)]   取出 之间的区别类似text与utext
+[[...]] 转译特殊字符  [(...)] 不转译
+-->
+<h2> <span th:each="user:${users}">[[${user}]]</span></h2>
+
+</body>
+</html>
