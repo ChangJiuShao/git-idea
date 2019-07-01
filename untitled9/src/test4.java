@@ -32,7 +32,6 @@ public class test4 {
             return res;
         }
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
         int[] array = {-1,2,1};
         test4 test4 = new test4();
         System.out.println(test4.FindGreatestSumOfSubArray(array));
